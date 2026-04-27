@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+:root {
+  --background: #faf9f6;
+  --foreground: #1a1a1a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* Luxury gold accent palette */
+  --color-gold-50: #fdf9ef;
+  --color-gold-100: #f9f0d4;
+  --color-gold-200: #f2dfa8;
+  --color-gold-300: #e9c96d;
+  --color-gold-400: #d4a853;
+  --color-gold-500: #c49a3c;
+  --color-gold-600: #b87820;
+  --color-gold-700: #99591c;
+
+  /* Neutrals */
+  --color-charcoal: #1a1a1a;
+  --color-ivory: #faf9f6;
+  --color-smoke: #f5f5f5;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
