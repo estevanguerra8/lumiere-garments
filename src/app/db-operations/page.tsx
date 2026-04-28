@@ -29,12 +29,12 @@ ORDER BY Name;`,
     description: 'When a customer places an order, we INSERT into ORDER and ORDER_LINE tables.',
     sql: `INSERT INTO \`ORDER\`
   (CustomerID, OrderDate, TotalAmount, PaymentStatus)
-VALUES (1, '2026-04-27', 545.00, 'Paid');
+VALUES (1, '2026-04-27', 365.00, 'Paid');
 
 INSERT INTO ORDER_LINE
   (OrderID, ProductID, Quantity, SalePrice)
-VALUES (6, 1, 1, 350.00),
-       (6, 2, 1, 195.00);`,
+VALUES (4, 1, 1, 220.00),
+       (4, 3, 1, 145.00);`,
     color: 'bg-green-50 text-green-700 border-green-200',
   },
   {
@@ -52,7 +52,7 @@ WHERE ProductID = 1
     title: 'Remove Record (DELETE)',
     description: 'Removing a customer or cancelling an order can demonstrate DELETE operations.',
     sql: `DELETE FROM CUSTOMER
-WHERE CustomerID = 5;`,
+WHERE CustomerID = 3;`,
     color: 'bg-red-50 text-red-700 border-red-200',
   },
   {

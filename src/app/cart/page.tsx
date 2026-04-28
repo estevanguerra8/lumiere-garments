@@ -104,13 +104,19 @@ export default function CartPage() {
                   className="bg-white border border-gray-200 rounded-xl p-5 flex items-center gap-4"
                 >
                   <div className="w-16 h-16 relative rounded-lg overflow-hidden shrink-0 bg-gray-100">
-                    <Image
-                      src={product.ImageUrl}
-                      alt={product.Name}
-                      fill
-                      sizes="64px"
-                      className="object-cover"
-                    />
+                    {product.ImageUrl ? (
+                      <Image
+                        src={product.ImageUrl}
+                        alt={product.Name}
+                        fill
+                        sizes="64px"
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400 text-[10px]">
+                        No Image
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex-1 min-w-0">

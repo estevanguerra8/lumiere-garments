@@ -97,13 +97,19 @@ export default function CatalogPage() {
           >
             {/* Product image */}
             <div className="h-56 relative overflow-hidden bg-gray-100">
-              <Image
-                src={product.ImageUrl}
-                alt={product.Name}
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                className="object-cover hover:scale-105 transition-transform duration-500"
-              />
+              {product.ImageUrl ? (
+                <Image
+                  src={product.ImageUrl}
+                  alt={product.Name}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  className="object-cover hover:scale-105 transition-transform duration-500"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
+                  No Image
+                </div>
+              )}
             </div>
 
             <div className="p-5">

@@ -16,7 +16,8 @@ export default function InventoryPage() {
 
   // Aggregate total stock per product
   const productTotals = products.map(p => ({
-    name: p.Name,
+    id: p.ProductID,
+    name: `${p.Name} (${p.Size})`,
     total: p.totalInventory,
   }));
 
@@ -146,7 +147,7 @@ export default function InventoryPage() {
           <h2 className="text-lg font-semibold mb-4">Total Stock per Product</h2>
           <ul className="space-y-3">
             {productTotals.map(p => (
-              <li key={p.name} className="flex items-center justify-between text-sm">
+              <li key={p.id} className="flex items-center justify-between text-sm">
                 <span className="truncate mr-2">{p.name}</span>
                 <span className={`font-mono text-xs px-2 py-0.5 rounded-full ${
                   p.total === 0
