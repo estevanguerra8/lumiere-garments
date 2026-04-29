@@ -90,9 +90,9 @@ export default function DbOperationsPage() {
   const orderDetails = getOrdersWithCustomerAndProductDetails();
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Database Operations Demo</h1>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Database Operations Demo</h1>
         <p className="text-gray-500 mt-1 text-sm">
           Each UI action maps to a SQL/database operation. Below are the equivalent queries.
         </p>

@@ -26,7 +26,7 @@ export default function CartPage() {
     return products.find(p => p.ProductID === productId);
   }
 
-  function handleCheckout() {
+  async function handleCheckout() {
     if (!selectedCustomer) {
       setOrderResult({ success: false, message: 'Please select a customer.' });
       return;
@@ -39,27 +39,24 @@ export default function CartPage() {
     setProcessing(true);
     setOrderResult(null);
 
-    // Simulate a brief processing delay for demo effect
-    setTimeout(() => {
-      const result = placeOrder(selectedCustomer, items);
-      if (result.success) {
-        setOrderResult({
-          success: true,
-          message: `Order #${result.order.OrderID} placed successfully! Total: ${formatCurrency(result.order.TotalAmount)}`,
-        });
-        clearCart();
-        setSelectedCustomer(0);
-      } else {
-        setOrderResult({ success: false, message: result.error });
-      }
-      setProcessing(false);
-    }, 600);
+    const result = await placeOrder(selectedCustomer, items);
+    if (result.success) {
+      setOrderResult({
+        success: true,
+        message: `Order #${result.order.OrderID} placed successfully! Total: ${formatCurrency(result.order.TotalAmount)}`,
+      });
+      clearCart();
+      setSelectedCustomer(0);
+    } else {
+      setOrderResult({ success: false, message: result.error });
+    }
+    setProcessing(false);
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Cart & Checkout</h1>
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Cart & Checkout</h1>
         <p className="text-gray-500 mt-1 text-sm">Review your items and place an order.</p>
       </div>
 
@@ -101,58 +98,65 @@ export default function CartPage() {
               return (
                 <div
                   key={item.ProductID}
-                  className="bg-white border border-gray-200 rounded-xl p-5 flex items-center gap-4"
+                  className="bg-white border border-gray-200 rounded-xl p-4 sm:p-5"
                 >
-                  <div className="w-16 h-16 relative rounded-lg overflow-hidden shrink-0 bg-gray-100">
-                    {product.ImageUrl ? (
-                      <Image
-                        src={product.ImageUrl}
-                        alt={product.Name}
-                        fill
-                        sizes="64px"
-                        className="object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400 text-[10px]">
-                        No Image
-                      </div>
-                    )}
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 relative rounded-lg overflow-hidden shrink-0 bg-gray-100">
+                      {product.ImageUrl ? (
+                        <Image
+                          src={product.ImageUrl}
+                          alt={product.Name}
+                          fill
+                          sizes="64px"
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-400 text-[10px]">
+                          No Image
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-sm">{product.Name}</h3>
+                      <p className="text-xs text-gray-400">
+                        {product.Size} / {product.Color} &middot; {product.totalInventory} in stock
+                      </p>
+                      <p className="text-sm font-bold mt-1 sm:hidden">{formatCurrency(item.SalePrice)}</p>
+                    </div>
+
+                    {/* Desktop: price + line total inline */}
+                    <p className="text-sm font-bold hidden sm:block">{formatCurrency(item.SalePrice)}</p>
                   </div>
 
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-sm">{product.Name}</h3>
-                    <p className="text-xs text-gray-400">
-                      {product.Size} / {product.Color} &middot; {product.totalInventory} in stock
-                    </p>
-                    <p className="text-sm font-bold mt-1">{formatCurrency(item.SalePrice)}</p>
-                  </div>
+                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 sm:border-0 sm:mt-0 sm:pt-0 sm:ml-[calc(3.5rem+0.75rem)] md:ml-[calc(4rem+1rem)]">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => updateQuantity(item.ProductID, item.Quantity - 1)}
+                        className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-sm hover:bg-gray-50"
+                      >
+                        -
+                      </button>
+                      <span className="w-8 text-center text-sm font-medium">{item.Quantity}</span>
+                      <button
+                        onClick={() => updateQuantity(item.ProductID, item.Quantity + 1)}
+                        className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-sm hover:bg-gray-50"
+                      >
+                        +
+                      </button>
+                    </div>
 
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => updateQuantity(item.ProductID, item.Quantity - 1)}
-                      className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-sm hover:bg-gray-50"
-                    >
-                      -
-                    </button>
-                    <span className="w-8 text-center text-sm font-medium">{item.Quantity}</span>
-                    <button
-                      onClick={() => updateQuantity(item.ProductID, item.Quantity + 1)}
-                      className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-sm hover:bg-gray-50"
-                    >
-                      +
-                    </button>
-                  </div>
-
-                  <div className="text-right">
-                    <p className="font-semibold text-sm">
-                      {formatCurrency(item.Quantity * item.SalePrice)}
-                    </p>
-                    <button
-                      onClick={() => removeItem(item.ProductID)}
-                      className="text-xs text-red-500 hover:text-red-700 mt-1"
-                    >
-                      Remove
-                    </button>
+                    <div className="flex items-center gap-4">
+                      <p className="font-semibold text-sm">
+                        {formatCurrency(item.Quantity * item.SalePrice)}
+                      </p>
+                      <button
+                        onClick={() => removeItem(item.ProductID)}
+                        className="text-xs text-red-500 hover:text-red-700"
+                      >
+                        Remove
+                      </button>
+                    </div>
                   </div>
                 </div>
               );

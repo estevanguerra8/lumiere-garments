@@ -20,24 +20,24 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
       {/* Header */}
-      <div className="mb-10">
-        <h1 className="text-3xl font-bold tracking-tight">Executive Dashboard</h1>
+      <div className="mb-6 sm:mb-10">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Executive Dashboard</h1>
         <p className="text-gray-500 mt-1 text-sm tracking-wide">
           Lumiere Garments &mdash; A Database for Luxury Streetwear
         </p>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-10">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-6 sm:mb-10">
         {kpis.map(kpi => (
           <div
             key={kpi.label}
-            className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow"
+            className="bg-white border border-gray-200 rounded-xl p-3 sm:p-5 shadow-sm hover:shadow-md transition-shadow"
           >
             <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">{kpi.label}</p>
-            <p className="text-2xl font-bold text-charcoal">{kpi.value}</p>
+            <p className="text-xl sm:text-2xl font-bold text-charcoal">{kpi.value}</p>
             <p className="text-[11px] text-gold-600 mt-1 font-mono">{kpi.sub}</p>
           </div>
         ))}
@@ -45,28 +45,28 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Orders */}
-        <div className="lg:col-span-2 bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+        <div className="lg:col-span-2 bg-white border border-gray-200 rounded-xl p-4 sm:p-6 shadow-sm">
           <h2 className="text-lg font-semibold mb-4">Recent Orders</h2>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-xs sm:text-sm">
               <thead>
-                <tr className="border-b border-gray-100 text-gray-400 text-xs uppercase tracking-wider">
-                  <th className="text-left py-2 pr-4">Order</th>
-                  <th className="text-left py-2 pr-4">Customer</th>
-                  <th className="text-left py-2 pr-4">Date</th>
-                  <th className="text-right py-2 pr-4">Amount</th>
+                <tr className="border-b border-gray-100 text-gray-400 text-[10px] sm:text-xs uppercase tracking-wider">
+                  <th className="text-left py-2 pr-2 sm:pr-4">Order</th>
+                  <th className="text-left py-2 pr-2 sm:pr-4">Customer</th>
+                  <th className="text-left py-2 pr-2 sm:pr-4 hidden sm:table-cell">Date</th>
+                  <th className="text-right py-2 pr-2 sm:pr-4">Amount</th>
                   <th className="text-left py-2">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {stats.recentOrders.map(order => (
                   <tr key={order.OrderID} className="border-b border-gray-50 hover:bg-smoke/50">
-                    <td className="py-3 pr-4 font-mono text-gold-600">#{order.OrderID}</td>
-                    <td className="py-3 pr-4">{order.CustomerName}</td>
-                    <td className="py-3 pr-4 text-gray-500">{order.OrderDate}</td>
-                    <td className="py-3 pr-4 text-right font-semibold">{formatCurrency(order.TotalAmount)}</td>
-                    <td className="py-3">
-                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                    <td className="py-2 sm:py-3 pr-2 sm:pr-4 font-mono text-gold-600">#{order.OrderID}</td>
+                    <td className="py-2 sm:py-3 pr-2 sm:pr-4">{order.CustomerName}</td>
+                    <td className="py-2 sm:py-3 pr-2 sm:pr-4 text-gray-500 hidden sm:table-cell">{order.OrderDate}</td>
+                    <td className="py-2 sm:py-3 pr-2 sm:pr-4 text-right font-semibold">{formatCurrency(order.TotalAmount)}</td>
+                    <td className="py-2 sm:py-3">
+                      <span className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium ${
                         order.PaymentStatus === 'Paid'
                           ? 'bg-green-50 text-green-700'
                           : order.PaymentStatus === 'Pending'

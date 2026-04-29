@@ -27,14 +27,14 @@ export default function InventoryPage() {
     setMessage(null);
   }
 
-  function saveEdit() {
+  async function saveEdit() {
     if (!editing) return;
     const qty = parseInt(editQty, 10);
     if (isNaN(qty) || qty < 0) {
       setMessage('Quantity must be a non-negative number.');
       return;
     }
-    const ok = updateInventory(editing.productId, editing.warehouseId, qty);
+    const ok = await updateInventory(editing.productId, editing.warehouseId, qty);
     if (ok) {
       setMessage(`Inventory updated: Product #${editing.productId}, Warehouse #${editing.warehouseId} set to ${qty}.`);
     } else {
@@ -44,9 +44,9 @@ export default function InventoryPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Inventory</h1>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Inventory</h1>
         <p className="text-gray-500 mt-1 text-sm">
           Stock levels across warehouses. Click &quot;Edit&quot; to demonstrate UPDATE behavior.
         </p>
@@ -62,14 +62,14 @@ export default function InventoryPage() {
         {/* Inventory Table */}
         <div className="lg:col-span-2 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-xs sm:text-sm">
               <thead>
-                <tr className="bg-gray-50 border-b border-gray-200 text-gray-400 text-xs uppercase tracking-wider">
-                  <th className="text-left px-5 py-3">Product</th>
-                  <th className="text-left px-5 py-3">Warehouse</th>
-                  <th className="text-right px-5 py-3">Quantity</th>
-                  <th className="text-left px-5 py-3">Status</th>
-                  <th className="text-right px-5 py-3">Action</th>
+                <tr className="bg-gray-50 border-b border-gray-200 text-gray-400 text-[10px] sm:text-xs uppercase tracking-wider">
+                  <th className="text-left px-2.5 sm:px-5 py-2 sm:py-3">Product</th>
+                  <th className="text-left px-2.5 sm:px-5 py-2 sm:py-3">Warehouse</th>
+                  <th className="text-right px-2.5 sm:px-5 py-2 sm:py-3">Qty</th>
+                  <th className="text-left px-2.5 sm:px-5 py-2 sm:py-3">Status</th>
+                  <th className="text-right px-2.5 sm:px-5 py-2 sm:py-3">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -82,24 +82,24 @@ export default function InventoryPage() {
                       key={`${inv.ProductID}-${inv.WarehouseID}`}
                       className="border-b border-gray-50 hover:bg-smoke/50"
                     >
-                      <td className="px-5 py-3 font-medium">{inv.ProductName}</td>
-                      <td className="px-5 py-3 text-gray-500">{inv.WarehouseLocation}</td>
-                      <td className="px-5 py-3 text-right">
+                      <td className="px-2.5 sm:px-5 py-2 sm:py-3 font-medium">{inv.ProductName}</td>
+                      <td className="px-2.5 sm:px-5 py-2 sm:py-3 text-gray-500">{inv.WarehouseLocation}</td>
+                      <td className="px-2.5 sm:px-5 py-2 sm:py-3 text-right">
                         {isEditing ? (
                           <input
                             type="number"
                             min="0"
                             value={editQty}
                             onChange={e => setEditQty(e.target.value)}
-                            className="w-20 border border-gray-300 rounded px-2 py-1 text-sm text-right focus:outline-none focus:ring-2 focus:ring-gold-400/50"
+                            className="w-16 sm:w-20 border border-gray-300 rounded px-2 py-1 text-xs sm:text-sm text-right focus:outline-none focus:ring-2 focus:ring-gold-400/50"
                             autoFocus
                           />
                         ) : (
                           <span className="font-mono">{inv.Quantity}</span>
                         )}
                       </td>
-                      <td className="px-5 py-3">
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                      <td className="px-2.5 sm:px-5 py-2 sm:py-3">
+                        <span className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium ${
                           inv.Quantity === 0
                             ? 'bg-red-50 text-red-700'
                             : inv.Quantity <= 10
@@ -109,18 +109,18 @@ export default function InventoryPage() {
                           {inv.Quantity === 0 ? 'Out' : inv.Quantity <= 10 ? 'Low' : 'OK'}
                         </span>
                       </td>
-                      <td className="px-5 py-3 text-right">
+                      <td className="px-2.5 sm:px-5 py-2 sm:py-3 text-right">
                         {isEditing ? (
-                          <div className="flex justify-end gap-2">
+                          <div className="flex justify-end gap-1.5 sm:gap-2">
                             <button
                               onClick={saveEdit}
-                              className="text-xs px-3 py-1 bg-gold-500 text-white rounded hover:bg-gold-600"
+                              className="text-[10px] sm:text-xs px-2 sm:px-3 py-1 bg-gold-500 text-white rounded hover:bg-gold-600"
                             >
                               Save
                             </button>
                             <button
                               onClick={() => setEditing(null)}
-                              className="text-xs px-3 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200"
+                              className="text-[10px] sm:text-xs px-2 sm:px-3 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200"
                             >
                               Cancel
                             </button>
@@ -128,7 +128,7 @@ export default function InventoryPage() {
                         ) : (
                           <button
                             onClick={() => startEdit(inv.ProductID, inv.WarehouseID, inv.Quantity)}
-                            className="text-xs px-3 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200"
+                            className="text-[10px] sm:text-xs px-2 sm:px-3 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200"
                           >
                             Edit
                           </button>

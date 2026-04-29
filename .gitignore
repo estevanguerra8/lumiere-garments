@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# sqlite
+lumiere.db
+lumiere.db-wal
+lumiere.db-shm
