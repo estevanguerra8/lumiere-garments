@@ -21,6 +21,9 @@ ENV NODE_ENV=production
 ENV HOSTNAME="0.0.0.0"
 ENV PORT=3000
 
+# Runtime dependency for better-sqlite3 native addon
+RUN apk add --no-cache libstdc++
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 

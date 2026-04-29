@@ -4,6 +4,7 @@ import './globals.css';
 import { DataProvider } from '@/providers/DataProvider';
 import { CartProvider } from '@/providers/CartProvider';
 import Navbar from '@/components/layout/Navbar';
+import LoadingGate from '@/components/layout/LoadingGate';
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] });
@@ -22,7 +23,7 @@ export default function RootLayout({
         <DataProvider>
           <CartProvider>
             <Navbar />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1"><LoadingGate>{children}</LoadingGate></main>
             <footer className="bg-charcoal text-gray-500 text-center py-4 text-xs tracking-wider">
               LUMIERE GARMENTS &mdash; CS/SE 4347 Database Systems Demo
             </footer>
