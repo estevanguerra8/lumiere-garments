@@ -176,9 +176,14 @@ function initializeDatabase(): Database.Database {
       const insCust = db.prepare(
         'INSERT INTO CUSTOMER (CustomerID, Name, Email, ShippingAddress, RegistrationDate) VALUES (?, ?, ?, ?, ?)'
       );
-      insCust.run(1, 'Taylor Phan', 'tayvon@example.com',  'Garland TX',  '2026-02-01');
-      insCust.run(2, 'Aastha Tyagi', 'aastha@example.com', 'Dallas TX',   '2026-02-05');
-      insCust.run(3, 'Minhao Ni',    'minhao@example.com', 'Plano TX',    '2026-02-12');
+      insCust.run(1, 'Taylor Phan',    'tayvon@example.com',   'Garland TX',       '2026-02-01');
+      insCust.run(2, 'Aastha Tyagi',   'aastha@example.com',   'Dallas TX',        '2026-02-05');
+      insCust.run(3, 'Minhao Ni',      'minhao@example.com',   'Plano TX',         '2026-02-12');
+      insCust.run(4, 'Jordan Reeves',  'jordan@example.com',   'Austin TX',        '2026-02-18');
+      insCust.run(5, 'Priya Sharma',   'priya@example.com',    'Frisco TX',        '2026-03-01');
+      insCust.run(6, 'Marcus Bell',    'marcus@example.com',   'Richardson TX',    '2026-03-08');
+      insCust.run(7, 'Sofia Chen',     'sofia@example.com',    'Irving TX',        '2026-03-15');
+      insCust.run(8, 'Elijah Brooks',  'elijah@example.com',   'McKinney TX',      '2026-03-22');
 
       // -- PRODUCT_SUPPLIER
       const insPS = db.prepare(
@@ -199,33 +204,68 @@ function initializeDatabase(): Database.Database {
       insBatch.run(5, 5, 2, '2026-04-02', 450, 20);
       insBatch.run(6, 6, 1, '2026-04-03', 200, 70);
 
-      // -- INVENTORY
+      // -- INVENTORY (starting stock minus fulfilled orders above)
       const insInv = db.prepare(
         'INSERT INTO INVENTORY (ProductID, WarehouseID, Quantity) VALUES (?, ?, ?)'
       );
-      insInv.run(1, 1, 120); insInv.run(1, 2, 80);
-      insInv.run(2, 1, 100);
-      insInv.run(3, 1, 220); insInv.run(3, 2, 100);
-      insInv.run(4, 1, 180);
-      insInv.run(5, 2, 160);
-      insInv.run(6, 1, 90);
+      insInv.run(1, 1, 116); insInv.run(1, 2, 80);   // Cargo Jacket M: sold 4
+      insInv.run(2, 1, 98);                            // Cargo Jacket L: sold 2
+      insInv.run(3, 1, 215); insInv.run(3, 2, 100);   // Hoodie: sold 5
+      insInv.run(4, 1, 178);                           // Graphic Tee M: sold 2
+      insInv.run(5, 2, 158);                           // Graphic Tee L: sold 2
+      insInv.run(6, 1, 85);                            // Utility Pants: sold 5
 
-      // -- ORDER
+      // -- ORDER (12 orders spread across recent weeks, mix of statuses)
       const insOrd = db.prepare(
         'INSERT INTO "ORDER" (OrderID, CustomerID, OrderDate, TotalAmount, PaymentStatus) VALUES (?, ?, ?, ?, ?)'
       );
-      insOrd.run(1, 1, '2026-04-20', 245, 'Paid');
-      insOrd.run(2, 2, '2026-04-21', 220, 'Paid');
-      insOrd.run(3, 3, '2026-04-22', 170, 'Pending');
+      insOrd.run(1,  1, '2026-04-02', 245,  'Paid');
+      insOrd.run(2,  2, '2026-04-05', 220,  'Paid');
+      insOrd.run(3,  3, '2026-04-07', 170,  'Paid');
+      insOrd.run(4,  4, '2026-04-10', 380,  'Paid');
+      insOrd.run(5,  5, '2026-04-12', 305,  'Paid');
+      insOrd.run(6,  6, '2026-04-14', 85,   'Paid');
+      insOrd.run(7,  7, '2026-04-17', 525,  'Paid');
+      insOrd.run(8,  8, '2026-04-19', 160,  'Paid');
+      insOrd.run(9,  1, '2026-04-21', 290,  'Paid');
+      insOrd.run(10, 3, '2026-04-23', 440,  'Paid');
+      insOrd.run(11, 5, '2026-04-25', 365,  'Pending');
+      insOrd.run(12, 2, '2026-04-27', 145,  'Pending');
 
-      // -- ORDER_LINE
+      // -- ORDER_LINE (each order has 1-3 line items)
       const insOL = db.prepare(
         'INSERT INTO ORDER_LINE (OrderID, ProductID, Quantity, SalePrice) VALUES (?, ?, ?, ?)'
       );
+      // Order 1 — Taylor: Graphic Tee + Utility Pants
       insOL.run(1, 4, 1, 85);
       insOL.run(1, 6, 1, 160);
+      // Order 2 — Aastha: Cargo Jacket (M)
       insOL.run(2, 1, 1, 220);
+      // Order 3 — Minhao: 2x Graphic Tee (L)
       insOL.run(3, 5, 2, 85);
+      // Order 4 — Jordan: Cargo Jacket (L) + Utility Pants
+      insOL.run(4, 2, 1, 220);
+      insOL.run(4, 6, 1, 160);
+      // Order 5 — Priya: Hoodie + Utility Pants
+      insOL.run(5, 3, 1, 145);
+      insOL.run(5, 6, 1, 160);
+      // Order 6 — Marcus: Graphic Tee (M)
+      insOL.run(6, 4, 1, 85);
+      // Order 7 — Sofia: Cargo Jacket (M) + Hoodie + Utility Pants
+      insOL.run(7, 1, 1, 220);
+      insOL.run(7, 3, 1, 145);
+      insOL.run(7, 6, 1, 160);
+      // Order 8 — Elijah: Utility Pants
+      insOL.run(8, 6, 1, 160);
+      // Order 9 — Taylor (repeat): Hoodie + Hoodie (gift)
+      insOL.run(9, 3, 2, 145);
+      // Order 10 — Minhao (repeat): 2x Cargo Jacket (M)
+      insOL.run(10, 1, 2, 220);
+      // Order 11 — Priya (repeat): Cargo Jacket (L) + Hoodie
+      insOL.run(11, 2, 1, 220);
+      insOL.run(11, 3, 1, 145);
+      // Order 12 — Aastha (repeat): Hoodie
+      insOL.run(12, 3, 1, 145);
     });
 
     seed();
