@@ -51,7 +51,7 @@ export async function GET() {
            c.Name AS CustomerName
     FROM "ORDER" o
     JOIN CUSTOMER c ON o.CustomerID = c.CustomerID
-    ORDER BY o.OrderDate DESC
+    ORDER BY o.OrderDate DESC, o.OrderID DESC
     LIMIT 5
   `).all();
 
@@ -79,7 +79,7 @@ export async function GET() {
     JOIN "ORDER" o    ON c.CustomerID = o.CustomerID
     JOIN ORDER_LINE ol ON o.OrderID   = ol.OrderID
     JOIN PRODUCT p     ON ol.ProductID = p.ProductID
-    ORDER BY o.OrderDate DESC
+    ORDER BY o.OrderDate DESC, o.OrderID DESC
   `).all();
 
   // -- Production schedule: JOIN PRODUCTION_BATCH + PRODUCT + MANUFACTURER
