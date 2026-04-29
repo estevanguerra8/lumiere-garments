@@ -7,8 +7,20 @@
 
 import Database from 'better-sqlite3';
 import path from 'path';
+import fs from 'fs';
 
-const DB_PATH = path.join(process.cwd(), 'lumiere.db');
+// In production (Docker), use /app/data/ which is writable.
+// In development, use the project root.
+const DATA_DIR = process.env.NODE_ENV === 'production'
+  ? path.join(process.cwd(), 'data')
+  : process.cwd();
+
+// Ensure the directory exists
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+const DB_PATH = path.join(DATA_DIR, 'lumiere.db');
 
 // ---------------------------------------------------------------------------
 // Singleton — survives Next.js hot-reload in dev via globalThis
